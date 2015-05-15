@@ -1,5 +1,6 @@
 # encoding: utf-8
 import random
+import numpy
 from scipy.spatial import distance
 
 def KMeans (X, K):
@@ -11,6 +12,10 @@ def KMeans (X, K):
     bChangedClusters = updateClusters(centroids,pointDict)
     if(bChangedClusters):
       moveCentroids(centroids, pointDict)
+  
+  clusterDict = getClusters(pointDict,K)
+  
+  return (centroids, clusterDict)
   
 def setStartingCentroids(X,K):
   centroidList = []
@@ -48,4 +53,33 @@ def updateClusters(centroids, pointDict):
   return bChangedClusters
 
 def moveCentroids(centroids, pointDict):
-  for i in 
+  
+  for cent in range(len(centroids)):
+    coordsX=[]
+    coordsY=[]
+    coordsZ=[]
+    for point in pointDict:
+      if pointDict[point][0] == (centroid + 1):
+	coordsX.append(point[0])
+	coordsY.append(point[1])
+	coordsZ.append(point[2])
+    newX = numpy.median(numpy.array(coordsX))
+    newY = numpy.median(numpy.array(coordsY))
+    newZ = numpy.median(numpy.array(coordsZ))
+    
+    centroids[cent] = [newX,newY, newZ]
+    
+def getClusters(pointDict,K):
+  clusterDict = {}
+  
+  for cluster in range(1,K+1):
+    aux = []
+    
+    for point in pointDict:
+      if pointDict[point][0] == cluster:
+	aux.append(point)
+	
+    cluster[cluster] = aux
+    
+  return clusterDict
+	

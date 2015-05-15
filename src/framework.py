@@ -66,12 +66,6 @@ for im in Images:
 	# 2.3. Selection of K (number of clusters)
 	#############################################
 	# !!! TO-DO
-	
-	for i in X:
-	  print i
-	
-	if K == -1:
-	  pass
 
 	#############################################
 	# 2.4. Selection of the K seeds --> Seeds
