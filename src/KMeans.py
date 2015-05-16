@@ -99,7 +99,7 @@ def getClusters(pointDict,K):
       if pointDict[point][0] == cluster:
 	aux.append(point)
 	
-    cluster[cluster] = aux
+    clusterDict[cluster] = aux
     
   return clusterDict
 	
