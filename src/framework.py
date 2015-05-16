@@ -5,7 +5,7 @@ import ColorSpace as ce
 
 # !!! TO-DO: Define a module called KMeans
 # !!!	     and implement the K-Means method
-# from KMeans import *
+from KMeans import *
 
 from Evaluator import *
 import ColorNaming as cn
@@ -77,6 +77,7 @@ for im in Images:
 	# --> (centroids, clusters) = KMeans(X, K, Seeds)
 	#############################################
 	# !!! TO-DO
+	test1, test2 = KMeans(X,K)
 		
 	#############################################
 	# 2.6. Evaluate clusters according to Fisher
