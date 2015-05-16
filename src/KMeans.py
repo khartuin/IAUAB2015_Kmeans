@@ -15,7 +15,7 @@ def KMeans (X, K):
       moveCentroids(centroids, pointDict, X)
     i += 1
   
-  clusterDict = getClusters(pointDict,K)
+  clusterDict = getClusters(pointDict, K, X) #Cluster Dict: keys are clusters, values are lists with [pointNumber,pointPosition]
   
   return (centroids, clusterDict)
   
@@ -97,7 +97,7 @@ def getClusters(pointDict,K):
     
     for point in pointDict:
       if pointDict[point][0] == cluster:
-	aux.append(point)
+	aux.append([point,X[point]])
 	
     clusterDict[cluster] = aux
     
