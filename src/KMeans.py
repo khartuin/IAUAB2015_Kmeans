@@ -25,6 +25,8 @@ def setStartingCentroids(X,K):
   
   for i in range (K):
     r = random.randint(0,len(X)-1)
+    print r
+    print X[r]
     centroidList.append(X[r])
     
   return centroidList
@@ -39,21 +41,24 @@ def fillPointDict(X):
 def updateClusters(centroids, pointDict, X):
   bChangedClusters = False
   
+  numbers = [0,0]
   for point in pointDict:
     distances = []
-    print "Checking Point " + str(point)
+    #print "Checking Point " + str(point)
     for cent in centroids:
-      print "Checking Centroid " + str(cent)
-      d = distance.euclidean(point,cent)
+      print "Checking Centroid " + str(cent) + " for point " + str(point)
+      d = distance.euclidean(X[point],cent)
       distances.append(d)
-        
+    print "Distances: " + str(distances)
     if min(distances) != pointDict[point][1]:
       centroid = distances.index(min(distances))
       pointDict[point][0] = centroid + 1	#Cluster numbers are 1-k
       pointDict[point][1] = min(distances)
       bChangedClusters = True
-      print "New centroid for point " + str(point) + " is " + str(centroids[centroid])
+      print "New centroid for point " + str(point) + " is " + str(centroid + 1)
+    numbers[pointDict[point][0] - 1] += 1
   
+  print "Populations are: " + str(numbers)
   return bChangedClusters
 
 def moveCentroids(centroidList, pointDict, X):
@@ -68,16 +73,16 @@ def moveCentroids(centroidList, pointDict, X):
       if pointDict[i][0] == (centroid + 1):
 	print "Checking point " + str(i) + " at " + str(point)
 	coordsX.append(point[0])
-	print "X: " + str(point[0])
+	#print "X: " + str(point[0])
 	coordsY.append(point[1])
-	print "Y: " + str(point[1])
+	#print "Y: " + str(point[1])
 	coordsZ.append(point[2])
-	print "Z: " + str(point[2])
+	#print "Z: " + str(point[2])
       i += 1
     newX = numpy.mean(numpy.array(coordsX))
     newY = numpy.mean(numpy.array(coordsY))
     newZ = numpy.mean(numpy.array(coordsZ))
-    print "New coords for centroid " + str(centroid) + "is:"
+    print "New coords for centroid " + str(centroid) + " are:"
     print str(newX)
     print str(newY)
     print str(newZ)
