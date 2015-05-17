@@ -12,7 +12,7 @@ import ColorNaming as cn
 
 # !!! TO-DO: Define a module called Fisher
 # !!!	     and implement the Fisher method
-#import Fisher as fs
+import Fisher as fs
 
 #define the datasets
 ImageFolder 	= '../ImagesReduced'
@@ -70,23 +70,33 @@ for im in Images:
 	#############################################
 	# 2.4. Selection of the K seeds --> Seeds
 	#############################################
-	# !!! TO-DO
+	if K == -1:
+	  resultList = []
+	  fisherList = []
+	  for k in range(2, 10):
+	    Seeds = setStartingCentroids(X, K)
 
 	#############################################
 	# 2.5. Run K-Means 
 	# --> (centroids, clusters) = KMeans(X, K, Seeds)
 	#############################################
-	# !!! TO-DO
-	test1, test2 = KMeans(X,K)
-		
+	    centroids, clusters = KMeans(X, K, Seeds)
+	     
 	#############################################
 	# 2.6. Evaluate clusters according to Fisher
 	#      Not required in a first implementation
 	#      but recommended once K-Means is correctly
 	#      implemented!
 	#############################################
-	# !!! TO-DO
-
+	    fDisc= fs.Fisher(centroids, clusters)
+	    resultList.append([centroids,clusters])
+	    fisherList.append(fDisc)
+	  
+	  bestResult = resultList[fisherList.index(min(fisherList))]
+	  centroids = bestResult[0]
+	  
+	else:
+	  centroids, clusters = KMeans(X, K, Seeds)
 	
 	#############################################
 	# 2.7. Assign labels to centroids by color naming
