@@ -1,6 +1,7 @@
 from scipy.spatial import distance
 
 def Fisher (centroidList, clusterDict):
+  print "Fisher"
   k = len(centroidList)
   
   #IntraClusterDistances
@@ -14,14 +15,16 @@ def Fisher (centroidList, clusterDict):
     sumOfMeanDistances += sumOfDistances/mc
   
   #InterClusterDistances
-  i = 0
+  i = 1
   sumOfMeanDistanceOfPairs = 0.0
   for a in range(k):
     for b in range(i,k):
       distanceOfPair = distance.euclidean(centroidList[a],centroidList[b])
       sumOfMeanDistanceOfPairs += distanceOfPair
-    
-    
-  res = ((k-1)/2)*sumOfMeanDistances)/sumOfMeanDistanceOfPairs
+      i += 1
+  print sumOfMeanDistances
+  print sumOfMeanDistanceOfPairs
+  res = sumOfMeanDistances/sumOfMeanDistanceOfPairs 	
+  #res = (((float(k)-1.0)/2.0)*sumOfMeanDistances)/sumOfMeanDistanceOfPairs
   
   return res

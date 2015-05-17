@@ -22,11 +22,11 @@ GTFile		= '../ImagesReduced/LABELS.gt'
 # set up the process
 colorSpace	= 'RGB'		# RGB | Potentials | HSV | Cie-Lab
 rescale		= True		#
-scaleFactor	= 0.7		# rescaling factor for speeding-up the method!
+scaleFactor	= 0.1		# rescaling factor for speeding-up the method!
 seedSelection	= 'random'	# random initialization or something more sophisticated
-K		=  2		# if -1 then K it's automatically adjusted
-maxK		=  8		# max number of clusters for the Fisher heuristic
-labelsType	=  2		# 1 (simple) | 2 (composed labels!)
+K		= -1	#2		# if -1 then K it's automatically adjusted
+maxK		= 8		# max number of clusters for the Fisher heuristic
+labelsType	= 2		# 1 (simple) | 2 (composed labels!)
 
 labelThrs	= 0.1
 # evaluation parameters
@@ -65,22 +65,23 @@ for im in Images:
 	#############################################
 	# 2.3. Selection of K (number of clusters)
 	#############################################
-	# !!! TO-DO
+	#Done already below for K == -1
 
 	#############################################
 	# 2.4. Selection of the K seeds --> Seeds
 	#############################################
 	if K == -1:
+	  print str(X)
 	  resultList = []
 	  fisherList = []
-	  for k in range(2, 10):
-	    Seeds = setStartingCentroids(X, K)
+	  for k in range(2, maxK+1):
+	    Seeds = setStartingCentroids(X, k)
 
 	#############################################
 	# 2.5. Run K-Means 
 	# --> (centroids, clusters) = KMeans(X, K, Seeds)
 	#############################################
-	    centroids, clusters = KMeans(X, K, Seeds)
+	    centroids, clusters = KMeans(X, k, Seeds)
 	     
 	#############################################
 	# 2.6. Evaluate clusters according to Fisher
@@ -89,14 +90,19 @@ for im in Images:
 	#      implemented!
 	#############################################
 	    fDisc= fs.Fisher(centroids, clusters)
+	    print "Result for k: " + str(k) + " is: " + str(fDisc)
 	    resultList.append([centroids,clusters])
 	    fisherList.append(fDisc)
 	  
 	  bestResult = resultList[fisherList.index(min(fisherList))]
 	  centroids = bestResult[0]
+	  print "Best Result is " + str(min(fisherList)) + " with k=" + str(len(centroids))
 	  
 	else:
+	  Seeds = setStartingCentroids(X, K)
 	  centroids, clusters = KMeans(X, K, Seeds)
+	  print "Centroid List: \n" + str(centroids)
+	  print "\n ClusterList: \n" + str(clusters)
 	
 	#############################################
 	# 2.7. Assign labels to centroids by color naming

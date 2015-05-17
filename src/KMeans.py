@@ -4,6 +4,7 @@ import numpy
 from scipy.spatial import distance
 
 def KMeans (X, K, Seeds):
+  print "KMEANS"
   centroids = Seeds	#setStartingCentroids(X, K)
   pointDict = fillPointDict(X)
   bChangedClusters = True
@@ -20,13 +21,12 @@ def KMeans (X, K, Seeds):
 def setStartingCentroids(X,K):
   centroidList = []
   random.seed()
-  
-  for i in range (K):
+  for i in range(K):
+    
     r = random.randint(0,len(X)-1)
     centroidList.append(X[r])
-    
   return centroidList
-range
+
 def fillPointDict(X):
   pointDict = {}
   for i in range(len(X)):
@@ -49,7 +49,6 @@ def updateClusters(centroids, pointDict, X):
       pointDict[point][0] = centroid + 1	#Cluster numbers are 1-k
       pointDict[point][1] = min(distances)
       bChangedClusters = True
-    numbers[pointDict[point][0] - 1] += 1
   
   return bChangedClusters
 
