@@ -2,7 +2,9 @@
 import DataLoader as dl
 import DataProcessor as dp
 import ColorSpace as ce
-
+import scipy
+from scipy.cluster.vq import vq, kmeans, whiten
+import math
 # !!! TO-DO: Define a module called KMeans
 # !!!	     and implement the K-Means method
 from KMeans import *
@@ -22,9 +24,9 @@ GTFile		= '../ImagesReduced/LABELS.gt'
 # set up the process
 colorSpace	= 'RGB'		# RGB | Potentials | HSV | Cie-Lab
 rescale		= True		#
-scaleFactor	= 0.7		# rescaling factor for speeding-up the method!
+scaleFactor	= 0.1		# rescaling factor for speeding-up the method!
 seedSelection	= 'random'	# random initialization or something more sophisticated
-K		=  2		# if -1 then K it's automatically adjusted
+k		=  8		# if -1 then K it's automatically adjusted
 maxK		=  8		# max number of clusters for the Fisher heuristic
 labelsType	=  2		# 1 (simple) | 2 (composed labels!)
 
@@ -57,7 +59,7 @@ for im in Images:
 	#############################################
 	# 2.1. Data preprocessing & transformation
 	#############################################
-	imprep 	 = dp.processData(im, opts_prepro)
+	imprep = dp.processData(im, opts_prepro)
 	#############################################
 	# 2.2. Color space transformation (from Image to np.ndarray X)
 	#############################################
@@ -66,6 +68,25 @@ for im in Images:
 	# 2.3. Selection of K (number of clusters)
 	#############################################
 	# !!! TO-DO
+
+ 	#test1, test2 = KMeans(X, k)
+ 	#print test1
+ 	#print test2
+  
+  
+ 	if (1 == 1):
+ 	 	fisher = []	
+ 	 	for k_ in range (2, k+1, 1):
+ 	 	 	test1, test2 = KMeans(X, k_)
+ 	 	 	clustsize = []
+ 	 	 	for cluster_ in range(1, k_+1, 1):
+ 	 	 	 	clustsize.append(len(test2[cluster_])
+      
+      
+      
+ 	 	 	
+
+      
 
 	#############################################
 	# 2.4. Selection of the K seeds --> Seeds
@@ -77,8 +98,8 @@ for im in Images:
 	# --> (centroids, clusters) = KMeans(X, K, Seeds)
 	#############################################
 	# !!! TO-DO
-	test1, test2 = KMeans(X,K)
-		
+	#test1, test2 = KMeans(X,K)
+			
 	#############################################
 	# 2.6. Evaluate clusters according to Fisher
 	#      Not required in a first implementation
@@ -91,13 +112,20 @@ for im in Images:
 	#############################################
 	# 2.7. Assign labels to centroids by color naming
 	#############################################
-	(labels, weights) = cn.ClusterColorNaming(centroids, opts_labeller)
-	TLabels.append(labels);
-
+ 	(labels, weights) = cn.ClusterColorNaming(test1, opts_labeller)
+ 	TLabels.append(labels);
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 	print labels
 	print GT[gt_index]
 	gt_index = gt_index + 1
-
 #############################################
 # 3. Let's analyse the results
 #############################################
