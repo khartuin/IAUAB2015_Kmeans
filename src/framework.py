@@ -24,7 +24,7 @@ colorSpace	= 'RGB'		# RGB | Potentials | HSV | Cie-Lab
 rescale		= True		#
 scaleFactor	= 0.1		# rescaling factor for speeding-up the method!
 seedSelection	= 'random'	# random initialization or something more sophisticated
-K		= -1	#2		# if -1 then K it's automatically adjusted
+K		= 2	#2		# if -1 then K it's automatically adjusted
 maxK		= 8		# max number of clusters for the Fisher heuristic
 labelsType	= 2		# 1 (simple) | 2 (composed labels!)
 
@@ -100,8 +100,6 @@ for im in Images:
 	else:
 	  Seeds = setStartingCentroids(X, K)
 	  centroids, clusters = KMeans(X, K, Seeds)
-	  print "Centroid List: \n" + str(centroids)
-	  print "\n ClusterList: \n" + str(clusters)
 	
 	#############################################
 	# 2.7. Assign labels to centroids by color naming
