@@ -15,7 +15,6 @@ def KMeans (X, K, Seeds):
       moveCentroids(centroids, pointDict, X)
   
   clusterDict = getClusters(pointDict, K, X) #Cluster Dict: keys are clusters, values are lists with [pointNumber,pointPosition]
-  #print clusterDict
   return (centroids, clusterDict)
   
 def setStartingCentroids(X,K):
@@ -24,10 +23,8 @@ def setStartingCentroids(X,K):
   random.seed()
   for i in range(K):
     r = random.randint(0,len(X)-1)
-    print r
     if r in checklist:
       while r in checklist:
-	old = r
 	r = random.randint(0,len(X)-1)
     checklist.append(r)
     centroidList.append(X[r])
@@ -65,7 +62,6 @@ def moveCentroids(centroidList, pointDict, X):
     coordsY=[]
     coordsZ=[]
     i = 0
-    #print "Checking centroid " + str(centroid)
     for point in X:
       #print "Checking with point " + str(i) + ", it belongs supposedly to: " + str(pointDict[i][0])
       if pointDict[i][0] == (centroid):

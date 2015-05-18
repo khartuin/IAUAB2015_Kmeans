@@ -12,20 +12,14 @@ def Fisher (centroidList, clusterDict):
     for point in clusterDict[cluster]:
       distanceToCenter = distance.euclidean(point[1],centroidList[cluster-1])
       sumOfDistances += distanceToCenter
-    try:
-        sumOfMeanDistances += sumOfDistances/mc
-    except:
-        pass
+    sumOfMeanDistances += sumOfDistances/mc
   
   #InterClusterDistances
   i = 1
   sumOfMeanDistanceOfPairs = 0.0
   for a in range(k):
     for b in range(i,k):
-      try:
-          distanceOfPair = distance.euclidean(centroidList[a],centroidList[b])
-      except:
-          pass
+      distanceOfPair = distance.euclidean(centroidList[a],centroidList[b])
       sumOfMeanDistanceOfPairs += distanceOfPair
       i += 1
   print sumOfMeanDistances
