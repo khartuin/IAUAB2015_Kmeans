@@ -71,7 +71,6 @@ for im in Images:
 	# 2.4. Selection of the K seeds --> Seeds
 	#############################################
 	if K == -1:
-	  print str(X)
 	  resultList = []
 	  fisherList = []
 	  for k in range(2, maxK+1):
