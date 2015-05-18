@@ -2,6 +2,7 @@
 import random
 import numpy
 from scipy.spatial import distance
+import sys
 
 def KMeans (X, K, Seeds):
   print "KMEANS"
@@ -41,7 +42,14 @@ def updateClusters(centroids, pointDict, X):
     distances = []
     
     for cent in centroids:
-      d = distance.euclidean(X[point],cent)
+      try:
+        d = distance.euclidean(X[point],cent)
+      except:
+        #print cent    --descomentar per veure els centroides conflictius
+        #print centroids  
+        #d = 0
+        #sys.exit()
+        pass
       distances.append(d)
       
     if min(distances) != pointDict[point][1]:
