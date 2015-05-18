@@ -10,7 +10,7 @@ def Fisher (centroidList, clusterDict):
     mc = float(len(clusterDict[cluster]))
     sumOfDistances = 0.0
     for point in clusterDict[cluster]:
-      distanceToCenter = distance.euclidean(point[1],centroidList[cluster-1])
+      distanceToCenter = distance.euclidean(point[1],centroidList[cluster])
       sumOfDistances += distanceToCenter
     try:
       sumOfMeanDistances += sumOfDistances/mc
