@@ -123,6 +123,3 @@ for i in range(len(scores)):
 	sc = scores[i]
 	print imgName + ' [' + str(sc) + '%] of accuracy'
 print '** Overall accuracy is = [' + str(overall) + '%]'
-
-
-

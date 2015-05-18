@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # encoding: utf-8
 import random
 import numpy
@@ -94,4 +95,5 @@ def getClusters(pointDict, K, X):
     clusterDict[cluster] = aux
     
   return clusterDict
+
 	
