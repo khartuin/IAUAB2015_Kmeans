@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # encoding: utf-8
 import random
 import numpy
