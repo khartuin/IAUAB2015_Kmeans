@@ -12,7 +12,11 @@ def Fisher (centroidList, clusterDict):
     for point in clusterDict[cluster]:
       distanceToCenter = distance.euclidean(point[1],centroidList[cluster-1])
       sumOfDistances += distanceToCenter
-    sumOfMeanDistances += sumOfDistances/mc
+    try:
+      sumOfMeanDistances += sumOfDistances/mc
+    except ZeroDivisionError:
+      print "NAN in cluster: " + str(cluster)
+      continue
   
   #InterClusterDistances
   i = 1
