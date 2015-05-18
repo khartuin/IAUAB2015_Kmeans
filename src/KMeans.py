@@ -16,7 +16,7 @@ def KMeans (X, K, Seeds):
       moveCentroids(centroids, pointDict, X)
   
   clusterDict = getClusters(pointDict, K, X) #Cluster Dict: keys are clusters, values are lists with [pointNumber,pointPosition]
-  
+  print clusterDict
   return (centroids, clusterDict)
   
 def setStartingCentroids(X,K):
@@ -31,51 +31,50 @@ def setStartingCentroids(X,K):
 def fillPointDict(X):
   pointDict = {}
   for i in range(len(X)):
-    pointDict[i] = [-1,-1]	#Pos 0: cluster number (initially -1), Pos 1: distance to centroid
+    pointDict[i] = [-1,0]	#Pos 0: cluster number (initially -1), Pos 1: distance to centroid
   
   return pointDict
 
-def updateClusters(centroidList, pointDict, X):
-  print "UPDATE"
+def updateClusters(centroids, pointDict, X):
   bChangedClusters = False
+  
   for point in pointDict:
     distances = []
     
-    for cent in centroidList:
-      d = distance.euclidean(X[point-1],cent) 
+    for cent in centroids:
+      d = distance.euclidean(X[point],cent)
       distances.append(d)
       
     if min(distances) != pointDict[point][1]:
-      print "POINT:" + str(point)
       centroid = distances.index(min(distances))
-      #print "CENTROID:" + str(centroid)
-      pointDict[point][0] = centroid	#Cluster numbers are 0-(k-1)
+      pointDict[point][0] = centroid + 1	#Cluster numbers are 1-k
       pointDict[point][1] = min(distances)
-      
       bChangedClusters = True
-      
+  
   return bChangedClusters
 
 def moveCentroids(centroidList, pointDict, X):
+  
   for centroid in range(len(centroidList)):
     coordsX=[]
     coordsY=[]
     coordsZ=[]
     i = 0
+    a = False
     
     for point in X:
-      if pointDict[i][0] == (centroid):
-	coordsX.append(point[0])
-	coordsY.append(point[1])
-	coordsZ.append(point[2])
-      i += 1
+      if pointDict[i][0] == (centroid + 1):
+	  coordsX.append(point[0])
+	  coordsY.append(point[1])
+	  coordsZ.append(point[2])
+	  i += 1
+	  a = True
       
-    newX = numpy.mean(numpy.array(coordsX))
-    newY = numpy.mean(numpy.array(coordsY))
-    newZ = numpy.mean(numpy.array(coordsZ))
-    
-    centroidList[centroid] = [newX,newY, newZ]
-  print "CENTROID LIST: " + str(centroidList)
+    if a:
+      newX = numpy.mean(numpy.array(coordsX))
+      newY = numpy.mean(numpy.array(coordsY))
+      newZ = numpy.mean(numpy.array(coordsZ))
+      centroidList[centroid] = [newX,newY, newZ]
     
 def getClusters(pointDict, K, X):
   clusterDict = {}
@@ -90,5 +89,4 @@ def getClusters(pointDict, K, X):
     clusterDict[cluster] = aux
     
   return clusterDict
-
 	
