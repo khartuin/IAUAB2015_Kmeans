@@ -31,37 +31,32 @@ def setStartingCentroids(X,K):
 def fillPointDict(X):
   pointDict = {}
   for i in range(len(X)):
-    pointDict[i] = [-1,0]	#Pos 0: cluster number (initially -1), Pos 1: distance to centroid
+    pointDict[i] = [-1,-1]	#Pos 0: cluster number (initially -1), Pos 1: distance to centroid
   
   return pointDict
 
-def updateClusters(centroids, pointDict, X):
+def updateClusters(centroidList, pointDict, X):
+  print "UPDATE"
   bChangedClusters = False
-  
   for point in pointDict:
     distances = []
     
-    for cent in centroids:
-      try:
-        d = distance.euclidean(X[point],cent)
-      except:
-        #print cent    --descomentar per veure els centroides conflictius
-        #print centroids  
-        #d = 0
-        #sys.exit()
-        pass
+    for cent in centroidList:
+      d = distance.euclidean(X[point-1],cent) 
       distances.append(d)
       
     if min(distances) != pointDict[point][1]:
+      print "POINT:" + str(point)
       centroid = distances.index(min(distances))
-      pointDict[point][0] = centroid + 1	#Cluster numbers are 1-k
+      #print "CENTROID:" + str(centroid)
+      pointDict[point][0] = centroid	#Cluster numbers are 0-(k-1)
       pointDict[point][1] = min(distances)
+      
       bChangedClusters = True
-  
+      
   return bChangedClusters
 
 def moveCentroids(centroidList, pointDict, X):
-  
   for centroid in range(len(centroidList)):
     coordsX=[]
     coordsY=[]
@@ -69,7 +64,7 @@ def moveCentroids(centroidList, pointDict, X):
     i = 0
     
     for point in X:
-      if pointDict[i][0] == (centroid + 1):
+      if pointDict[i][0] == (centroid):
 	coordsX.append(point[0])
 	coordsY.append(point[1])
 	coordsZ.append(point[2])
@@ -80,11 +75,12 @@ def moveCentroids(centroidList, pointDict, X):
     newZ = numpy.mean(numpy.array(coordsZ))
     
     centroidList[centroid] = [newX,newY, newZ]
+  print "CENTROID LIST: " + str(centroidList)
     
 def getClusters(pointDict, K, X):
   clusterDict = {}
   
-  for cluster in range(1,K+1):
+  for cluster in range(K):
     aux = []
     
     for point in pointDict:

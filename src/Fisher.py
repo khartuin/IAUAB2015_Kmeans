@@ -6,7 +6,7 @@ def Fisher (centroidList, clusterDict):
   
   #IntraClusterDistances
   sumOfMeanDistances = 0.0
-  for cluster in range(1,k+1):
+  for cluster in range(k):
     mc = float(len(clusterDict[cluster]))
     sumOfDistances = 0.0
     for point in clusterDict[cluster]:
