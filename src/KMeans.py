@@ -5,7 +5,6 @@ from scipy.spatial import distance
 import sys
 
 def KMeans (X, K, Seeds):
-  print "KMEANS"
   centroids = Seeds	#setStartingCentroids(X, K)
   pointDict = fillPointDict(X)
   bChangedClusters = True
@@ -21,11 +20,16 @@ def KMeans (X, K, Seeds):
   
 def setStartingCentroids(X,K):
   centroidList = []
+  checklist = []
   random.seed()
   for i in range(K):
-    
     r = random.randint(0,len(X)-1)
-    if r in 
+    print r
+    if r in checklist:
+      while r in checklist:
+	old = r
+	r = random.randint(0,len(X)-1)
+    checklist.append(r)
     centroidList.append(X[r])
   return centroidList
 
@@ -50,23 +54,22 @@ def updateClusters(centroids, pointDict, X):
       centroid = distances.index(min(distances))
       pointDict[point][0] = centroid	#Cluster numbers are 1-k
       pointDict[point][1] = min(distances)
-      print "Point " + str(point) + " at " + str(X[point]) + " belongs to " + str(pointDict[point][0])
+      #print "Point " + str(point) + " at " + str(X[point]) + " belongs to " + str(pointDict[point][0])
       bChangedClusters = True
   
   return bChangedClusters
 
 def moveCentroids(centroidList, pointDict, X):
-  
   for centroid in range(len(centroidList)):
     coordsX=[]
     coordsY=[]
     coordsZ=[]
     i = 0
-    print "Checking centroid " + str(centroid)
+    #print "Checking centroid " + str(centroid)
     for point in X:
-      print "Checking with point " + str(i) + ", it belongs supposedly to: " + str(pointDict[i][0])
+      #print "Checking with point " + str(i) + ", it belongs supposedly to: " + str(pointDict[i][0])
       if pointDict[i][0] == (centroid):
-	print "MATCH"
+	#print "MATCH"
 	coordsX.append(point[0])
 	coordsY.append(point[1])
 	coordsZ.append(point[2])
@@ -77,8 +80,6 @@ def moveCentroids(centroidList, pointDict, X):
     newY = numpy.mean(numpy.array(coordsY))
     newZ = numpy.mean(numpy.array(coordsZ))
     centroidList[centroid] = [newX,newY, newZ]
-    
-    print "CENTROID LIST: \n" + str(centroidList)
   
 def getClusters(pointDict, K, X):
   clusterDict = {}
