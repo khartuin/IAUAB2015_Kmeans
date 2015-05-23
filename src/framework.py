@@ -17,7 +17,6 @@ import Fisher as fs
 #define the datasets
 #ImageFolder 	= '../ImagesReduced'
 #GTFile		= '../ImagesReduced/LABELS.gt'
-
 ImageFolder 	= '../Images'
 GTFile		= '../Images/LABELS.gt'
 
@@ -75,13 +74,10 @@ for im in Images:
 	#############################################
 	
 	if K == -1:
-	  for i in X:
-	    print i
-	  sys.exit(0)
 	  resultList = []
 	  fisherList = []
 	  for k in range(2, maxK+1):
-	    Seeds = setStartingCentroids(X, k, seedSelection)
+	    Seeds = setStartingCentroids(X, k)
 
 	#############################################
 	# 2.5. Run K-Means 
