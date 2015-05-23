@@ -15,14 +15,17 @@ import ColorNaming as cn
 import Fisher as fs
 
 #define the datasets
+#ImageFolder 	= '../ImagesReduced'
+#GTFile		= '../ImagesReduced/LABELS.gt'
+
 ImageFolder 	= '../Images'
 GTFile		= '../Images/LABELS.gt'
 
 
 # set up the process
-colorSpace	= 'RGB'		# RGB | Potentials | HSV | Cie-Lab
+colorSpace	= 'Potentials'		# RGB | Potentials | HSV | Cie-Lab
 rescale		= True		#
-scaleFactor	= 0.1		# rescaling factor for speeding-up the method!
+scaleFactor	= 0.7		# rescaling factor for speeding-up the method!
 seedSelection	= 'random'	# random initialization or something more sophisticated
 K		= -1	#2	# if -1 then K it's automatically adjusted
 maxK		= 8		# max number of clusters for the Fisher heuristic
@@ -70,18 +73,22 @@ for im in Images:
 	#############################################
 	# 2.4. Selection of the K seeds --> Seeds
 	#############################################
+	
 	if K == -1:
+	  for i in X:
+	    print i
+	  sys.exit(0)
 	  resultList = []
 	  fisherList = []
 	  for k in range(2, maxK+1):
-	    Seeds = setStartingCentroids(X, k)
+	    Seeds = setStartingCentroids(X, k, seedSelection)
 
 	#############################################
 	# 2.5. Run K-Means 
 	# --> (centroids, clusters) = KMeans(X, K, Seeds)
 	#############################################
 	    centroids, clusters = KMeans(X, k, Seeds)
-	    print centroids
+	    #print centroids
 	     
 	#############################################
 	# 2.6. Evaluate clusters according to Fisher
