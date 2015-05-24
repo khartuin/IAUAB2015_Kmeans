@@ -4,7 +4,7 @@ from numpy import *
 def Fisher (centroidList, clusterDict):
   K = len(clusterDict)
   l = 0
-  sumOfPointDistances = 0.0
+  meanSumOfPointDistances = 0.0
   for cluster in range(K):
     mc = len(clusterDict[cluster])
     sumOfDistances = 0.0
@@ -13,27 +13,24 @@ def Fisher (centroidList, clusterDict):
       for point in clusterDict[cluster]:
 	distanceToCentroid = distance.euclidean(point[1],centroidList[cluster])
 	sumOfDistances += distanceToCentroid	
-      sumOfPointDistances += sumOfDistances/mc
+      meanSumOfPointDistances += (sumOfDistances/float(mc))
     else:
       print "Cluster " + str(cluster) + " is empty"
   
-  sumOfPointDistances = sumOfPointDistances/l
-  print sumOfPointDistances
+  print meanSumOfPointDistances
       
   sumOfPairDistances = 0.0
-  x=0
   for i in range(K):
     for j in range(i+1,K):
       if clusterDict[i] and clusterDict[j]:
-	x+=1
 	pairDistance = distance.euclidean(centroidList[i],centroidList[j])
 	sumOfPairDistances += pairDistance
-      
+	
+  
   print sumOfPairDistances
   
-  res = ((l-1.0)/2.0)*sumOfPointDistances/sumOfPairDistances
-  
-
+  #res = meanSumOfPointDistances/sumOfPairDistances
+  res = float((l-1.0)/2.0)*meanSumOfPointDistances/sumOfPairDistances
   return res
       
   #i = array(centroidList)

@@ -1,10 +1,11 @@
 # encoding: utf-8
-import random
+from random import seed, randrange
 from numpy import *
 from scipy.spatial import distance
 import sys
 
 def KMeans (X, K, Seeds):
+  print "NEW KMEANS"
   centroids = Seeds	#setStartingCentroids(X, K)
   pointDict = fillPointDict(X)
   bChangedClusters = True
@@ -17,36 +18,17 @@ def KMeans (X, K, Seeds):
   clusterDict = getClusters(pointDict, K, X) #Cluster Dict: keys are clusters, values are lists with [pointNumber,pointPosition]
   return (centroids, clusterDict)
   
-def setStartingCentroids(X, K, method = 'random'):
+def setStartingCentroids(X, K, method = 'randomMinDis'):
   centroidList = []
-  
-  if method == 'random':
-    checklist = []
-    random.seed()
-    for i in range(K):
-      r = random.randint(0,len(X)-1)
-      if r in checklist:
-	while r in checklist:
-	  r = random.randint(0,len(X)-1)
-      checklist.append(r)
-      centroidList.append(X[r])
-      
-    #elif method == 'random_minDist':
-      #checklist = []
-      #distList
-      #random.seed()
-      #for i in range(K):
-	#r = random.randint(0,len(X)-1)
-	#if r in checklist:
-	  #while r in checklist:
-	    #r = random.randint(0,len(X)-1)
-	#for i 
-	#checklist.append(r)
-	#centroidList.append(X[r])
-	
-      #else:
-	#raise NotImplemented
-	
+  checklist = []
+  seed()
+  for i in range(K):
+    r = randrange(len(X))
+    if r in checklist:
+      while r in checklist:
+	r = randrange(len(X))
+    checklist.append(r)
+    centroidList.append(X[r])
   return centroidList
 
 def fillPointDict(X):
@@ -79,16 +61,24 @@ def moveCentroids(centroidList, pointDict, X):
   for centroid in range(len(centroidList)):
     coords = zeros(len(X[0]))
     i = 0
+    k = 0
     for point in X:
       #print "Checking with point " + str(i) + ", it belongs supposedly to: " + str(pointDict[i][0])
       if pointDict[i][0] == (centroid):
 	#print "MATCH"
 	coords+=point
+	#print "WITH POINT " + str(i)
+	#print coords
+	k+=1
       i += 1
-    divArray = i*ones(len(X[0]))  
+    divArray = k*ones(len(X[0]))
+    #print "DIV ARRAY"
+    #print divArray
     meanCoords = coords/divArray
+    #print "MEAN COORDS FOR " + str(centroid)
+    #print meanCoords
     centroidList[centroid] = meanCoords
-  
+    
 def getClusters(pointDict, K, X):
   clusterDict = {}
   
