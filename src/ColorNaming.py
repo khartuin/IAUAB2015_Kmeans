@@ -1,6 +1,7 @@
 # colorNaming.py
 
 from numpy import *
+#from ColorSpace import HSV2RGB
 
 
 # *************************
@@ -286,11 +287,13 @@ def ImColorNamingTSELabDescriptor(ima, positions=None, patchSize=1, bCIELAB = Fa
     numLevels = size(thrL)-1                   # Number of Lightness levels in the model
 
 
-    # Image conversion: sRGB to CIELab
     if not bCIELAB:
+      #Image conversion: sRGB to CIELab
       Lab = ImsRGB2Lab(ima)
+      
     else:
       Lab = ima
+      
     if positions!=None:
 	if patchSize==1:
             Lab = Lab[positions[:,0],positions[:,1],:].reshape((1,-1,3))
@@ -404,6 +407,10 @@ def ClusterColorNaming(Clusters, options):
 	elif colorSpace == 'Cie-Lab':
 	  cieVal = reshape(Clusters[i], (1, 1, len(Clusters[i])))
 	  CDi = ImColorNamingTSELabDescriptor(cieVal,None,1,True).flatten()
+	elif colorSpace == 'HSV':
+	  rgbVal = reshape(Clusters[i], (1, 1, len(Clusters[i])))
+	  CDi = ImColorNamingTSELabDescriptor(rgbVal).flatten()
+
 
         labels = []
         weights = []

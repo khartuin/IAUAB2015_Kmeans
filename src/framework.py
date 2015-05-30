@@ -6,6 +6,7 @@ import ColorSpace as ce
 # !!! TO-DO: Define a module called KMeans
 # !!!	     and implement the K-Means method
 from KMeans import *
+from math import isnan
 
 from Evaluator import *
 import ColorNaming as cn
@@ -15,14 +16,14 @@ import ColorNaming as cn
 import Fisher as fs
 
 #define the datasets
-ImageFolder 	= '../ImagesReduced'
-GTFile		= '../ImagesReduced/LABELS.gt'
-#ImageFolder 	= '../Images'
-#GTFile		= '../Images/LABELS.gt'
+#ImageFolder 	= '../ImagesReduced'
+#GTFile		= '../ImagesReduced/LABELS.gt'
+ImageFolder 	= '../Images'
+GTFile		= '../Images/LABELS.gt'
 
 
 # set up the process
-colorSpace	= 'Cie-Lab'		# RGB | Potentials | HSV | Cie-Lab
+colorSpace	= 'HSV'		# RGB | Potentials | HSV | Cie-Lab
 rescale		= True		#
 scaleFactor	= 0.1		# rescaling factor for speeding-up the method!
 seedSelection	= 'random'	# random initialization or something more sophisticated
@@ -77,6 +78,7 @@ for im in Images:
 	  resultList = []
 	  fisherList = []
 	  for k in range(2, maxK+1):
+	    bNAN = False
 	    Seeds = setStartingCentroids(X, k)
 
 	#############################################
@@ -90,21 +92,42 @@ for im in Images:
 	#      but recommended once K-Means is correctly
 	#      implemented!
 	#############################################
+	
+	#Check for NANs (empty clusters), may happen in HSV (for some reason)
+	    for i in centroids:
+	      for j in i:
+		if isnan(j):
+		  bNAN = True
+		  break
+	      if bNAN:
+		break
+	    if bNAN:
+	      print "FOUND NAN. SKIPPING!"
+	      continue
+	    
 	    fDisc= fs.Fisher(centroids, clusters)
 	    print "Result for k: " + str(k) + " is: " + str(fDisc)
 	    resultList.append([centroids,clusters])
 	    fisherList.append(fDisc)
-	  
-	  bestResult = resultList[fisherList.index(min(fisherList))]
+	  try:
+	    bestResult = resultList[fisherList.index(min(fisherList))]
+	  except ValueError:
+	    print "Only empty clusters for image. Program will stop."
+	    sys.exit()
+	    
 	  centroids = bestResult[0]
 	  print "Best Result is " + str(min(fisherList)) + " with k=" + str(len(centroids))
+	  #print centroids
+
 	else:
 	  Seeds = setStartingCentroids(X, K)
 	  centroids, clusters = KMeans(X, K, Seeds)
-	
+	  
 	#############################################
 	# 2.7. Assign labels to centroids by color naming
 	#############################################
+	if colorSpace == 'HSV':
+	  centroids = ce.HSV2RGB(centroids)	#Reconvert to RGB to allow for postprocess and naming
 	(labels, weights) = cn.ClusterColorNaming(centroids, opts_labeller)
 	TLabels.append(labels);
 

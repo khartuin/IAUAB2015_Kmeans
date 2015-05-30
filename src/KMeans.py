@@ -7,6 +7,7 @@ import sys
 def KMeans (X, K, Seeds):
   print "NEW KMEANS"
   centroids = Seeds	#setStartingCentroids(X, K)
+  #print Seeds
   pointDict = fillPointDict(X)
   bChangedClusters = True
 
@@ -69,6 +70,7 @@ def moveCentroids(centroidList, pointDict, X):
 	coords+=point
 	#print "WITH POINT " + str(i)
 	#print coords
+	#print point
 	k+=1
       i += 1
     divArray = k*ones(len(X[0]))
