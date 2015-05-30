@@ -8,9 +8,11 @@ def transformColorSpace(Im, options):
 	# space convertion to the 11-D potentials space
 	# space conversion: [0, 255]^3 --> [0, 1]^11
 	if options['colorSpace'] == 'Potentials':
-		ImOut = cn.ImColorNamingTSELabDescriptor(Im)
+	  ImOut = cn.ImColorNamingTSELabDescriptor(Im)
+	elif options['colorSpace'] == 'Cie-Lab':
+	  ImOut = cn.ImsRGB2Lab(Im)
 	else:
-		ImOut = Im
+	  ImOut = Im
 	
 	# type conversion and flattening
         ImOut = ImOut.reshape(ImOut.shape[0]*ImOut.shape[1], ImOut.shape[2])

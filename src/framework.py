@@ -22,9 +22,9 @@ GTFile		= '../ImagesReduced/LABELS.gt'
 
 
 # set up the process
-colorSpace	= 'Potentials'		# RGB | Potentials | HSV | Cie-Lab
+colorSpace	= 'Cie-Lab'		# RGB | Potentials | HSV | Cie-Lab
 rescale		= True		#
-scaleFactor	= 0.3		# rescaling factor for speeding-up the method!
+scaleFactor	= 0.1		# rescaling factor for speeding-up the method!
 seedSelection	= 'random'	# random initialization or something more sophisticated
 K		= -1		# if -1 then K it's automatically adjusted
 maxK		= 8		# max number of clusters for the Fisher heuristic
@@ -98,7 +98,6 @@ for im in Images:
 	  bestResult = resultList[fisherList.index(min(fisherList))]
 	  centroids = bestResult[0]
 	  print "Best Result is " + str(min(fisherList)) + " with k=" + str(len(centroids))
-	  
 	else:
 	  Seeds = setStartingCentroids(X, K)
 	  centroids, clusters = KMeans(X, K, Seeds)

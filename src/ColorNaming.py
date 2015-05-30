@@ -274,7 +274,7 @@ def SampleColorNaming(s):
 #            11 column matrix where each (y) position contains the set of 11 probabilities 
 #            to belong to the 11 basic colors. CD.spahe=(n_points, 11)
 # ***********************
-def ImColorNamingTSELabDescriptor(ima, positions=None, patchSize=1):
+def ImColorNamingTSELabDescriptor(ima, positions=None, patchSize=1, bCIELAB = False):
 
     # Constants
     numColors=11                               # Number of colors
@@ -287,9 +287,12 @@ def ImColorNamingTSELabDescriptor(ima, positions=None, patchSize=1):
 
 
     # Image conversion: sRGB to CIELab
-    Lab = ImsRGB2Lab(ima)
+    if not bCIELAB:
+      Lab = ImsRGB2Lab(ima)
+    else:
+      Lab = ima
     if positions!=None:
-        if patchSize==1:
+	if patchSize==1:
             Lab = Lab[positions[:,0],positions[:,1],:].reshape((1,-1,3))
         else:
             LabPatch = zeros((positions.shape[0],(2*trunc(patchSize/2)+1)**2,3))
@@ -394,10 +397,13 @@ def ClusterColorNaming(Clusters, options):
     #print len(Clusters)
     for i in range(len(Clusters)):
 	if colorSpace == 'RGB':
-            rgbVal = reshape(Clusters[i], (1, 1, len(Clusters[i])))
-            CDi = ImColorNamingTSELabDescriptor(rgbVal).flatten()
+	  rgbVal = reshape(Clusters[i], (1, 1, len(Clusters[i])))
+	  CDi = ImColorNamingTSELabDescriptor(rgbVal).flatten()
 	elif colorSpace == 'Potentials':
-            CDi = Clusters[i].flatten()
+	  CDi = Clusters[i].flatten()
+	elif colorSpace == 'Cie-Lab':
+	  cieVal = reshape(Clusters[i], (1, 1, len(Clusters[i])))
+	  CDi = ImColorNamingTSELabDescriptor(cieVal,None,1,True).flatten()
 
         labels = []
         weights = []
