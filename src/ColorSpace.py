@@ -140,7 +140,7 @@ def HSV2RGB(Im):
     #for column in row:
       #h = column[0]
       #s = column[1]
-      #v = column[2]
+      #v = column[2]*256.0
       
       #if s == 0:
 	##Achromatic (grey)

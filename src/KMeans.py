@@ -7,7 +7,8 @@ import sys
 def KMeans (X, K, Seeds):
   print "NEW KMEANS"
   centroids = Seeds	#setStartingCentroids(X, K)
-  #print Seeds
+  print "SEEDS"
+  print Seeds
   pointDict = fillPointDict(X)
   bChangedClusters = True
 
@@ -19,17 +20,19 @@ def KMeans (X, K, Seeds):
   clusterDict = getClusters(pointDict, K, X) #Cluster Dict: keys are clusters, values are lists with [pointNumber,pointPosition]
   return (centroids, clusterDict)
   
-def setStartingCentroids(X, K, method = 'randomMinDis'):
+def setStartingCentroids(X, K):
   centroidList = []
   checklist = []
   seed()
   for i in range(K):
-    r = randrange(len(X))
-    if r in checklist:
-      while r in checklist:
-	r = randrange(len(X))
+    r = X[randrange(len(X))]
+    for p in checklist:
+      if (r == p).all():
+	while (r == p).all():
+	  r = X[randrange(len(X))]
     checklist.append(r)
-    centroidList.append(X[r])
+    centroidList.append(r)
+    
   return centroidList
 
 def fillPointDict(X):
@@ -47,6 +50,7 @@ def updateClusters(centroids, pointDict, X):
     
     for cent in centroids:
       d = distance.euclidean(X[point],cent)
+      #print "Distance to: " + str(cent) + " is " + str(d)
       distances.append(d)
       
     if min(distances) != pointDict[point][1]:

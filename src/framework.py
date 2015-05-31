@@ -22,10 +22,11 @@ ImageFolder 	= '../Images'
 GTFile		= '../Images/LABELS.gt'
 
 
+
 # set up the process
-colorSpace	= 'HSV'		# RGB | Potentials | HSV | Cie-Lab
+colorSpace	= 'RGB'		# RGB | Potentials | HSV | Cie-Lab
 rescale		= True		#
-scaleFactor	= 0.1		# rescaling factor for speeding-up the method!
+scaleFactor	= 0.2		# rescaling factor for speeding-up the method!
 seedSelection	= 'random'	# random initialization or something more sophisticated
 K		= -1		# if -1 then K it's automatically adjusted
 maxK		= 8		# max number of clusters for the Fisher heuristic
@@ -85,7 +86,8 @@ for im in Images:
 	# 2.5. Run K-Means 
 	# --> (centroids, clusters) = KMeans(X, K, Seeds)
 	#############################################
-	    centroids, clusters = KMeans(X, k, Seeds)	     
+	    centroids, clusters = KMeans(X, k, Seeds)	
+	    #sys.exit()
 	#############################################
 	# 2.6. Evaluate clusters according to Fisher
 	#      Not required in a first implementation
