@@ -28,6 +28,7 @@ def transformColorSpace(Im, options):
 
 def RGB2HSV(Im):
   #print "RGB2HSV"
+  #print Im
   for row in Im:
     for column in row:
       #print "BEFORE:"
@@ -40,7 +41,7 @@ def RGB2HSV(Im):
 	#Fix for achromatic (greyscale, no saturation) colors
 	h = 0
 	s = 0
-	v = (float(r)/255.0)*100.0
+	v = float(r)/256.0
 	
       else:      
 	m = min([r,g,b])
@@ -76,16 +77,19 @@ def RGB2HSV(Im):
 	
       column[0] = h
       column[1] = s
-      column[2] = v
+      column[2] = v/256.0
       #print "AFTER:"
       #print column
+  #print Im
+  #print "TEST:"
+  #print HSV2RGB(Im.reshape(Im.shape[0]*Im.shape[1], Im.shape[2]))
   return Im
   
 def HSV2RGB(Im):
   for group in Im:
     h = group[0]
     s = group[1]
-    v = group[2]
+    v = group[2]*256.0		#Fix for conversion of Value from 0-255 scale to 0-1 scale in RGB2HSV
     
     if s == 0:
       #Achromatic (grey)
